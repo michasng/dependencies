@@ -2,18 +2,17 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:dependencies/dimension.dart';
+import 'package:dependencies/toggle_brightness_button.dart';
 import 'package:flutter/material.dart';
 
 class DimensionsPage extends StatefulWidget {
   static const floodCount = 100;
 
   final int initialDimensions;
-  final VoidCallback onToggleBrightness;
 
   const DimensionsPage({
     super.key,
     this.initialDimensions = 1,
-    required this.onToggleBrightness,
   });
 
   @override
@@ -57,11 +56,7 @@ class _DimensionsPageState extends State<DimensionsPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: widget.onToggleBrightness,
-            tooltip: 'Toggle dark mode',
-            icon: const Icon(Icons.brightness_6),
-          ),
+          const ToggleBrightnessButton(),
           IconButton(
             onPressed: () {
               setState(() {

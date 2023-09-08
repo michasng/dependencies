@@ -8,6 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   collection: ^1.17.2
+  flutter_riverpod: ^2.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,22 +1,19 @@
 import 'package:dependencies/dimensions_page.dart';
+import 'package:dependencies/toggle_brightness_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const ProviderScope(child: App()));
 }
 
-class App extends StatefulWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final brightness = ref.watch(brightnessProvider);
 
-class _AppState extends State<App> {
-  Brightness brightness = Brightness.light;
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dimensions',
       debugShowCheckedModeBanner: false,
@@ -27,15 +24,8 @@ class _AppState extends State<App> {
         ),
         useMaterial3: true,
       ),
-      home: DimensionsPage(
+      home: const DimensionsPage(
         initialDimensions: 1,
-        onToggleBrightness: () {
-          setState(() {
-            brightness = brightness == Brightness.light
-                ? Brightness.dark
-                : Brightness.light;
-          });
-        },
       ),
     );
   }
