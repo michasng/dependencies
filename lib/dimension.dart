@@ -18,20 +18,18 @@ class DimensionController {
 }
 
 class Dimension extends StatefulWidget {
-  static const double defaultValue = 0.5;
-
   final double initialValue;
-  final DimensionController? controller;
+  final DimensionController controller;
   final void Function({
     required double oldValue,
     required double newValue,
   })? onChanged;
 
   Dimension({
-    this.controller,
+    required this.controller,
     this.onChanged,
-  })  : initialValue = controller?.initialValue ?? defaultValue,
-        super(key: controller?._key);
+  })  : initialValue = controller.initialValue,
+        super(key: controller._key);
 
   @override
   State<Dimension> createState() => _DimensionState();
