@@ -38,7 +38,9 @@ class _DimensionsPageState extends State<DimensionsPage> {
     }
 
     int otherDimensionsCount = _dimensionControllers.length;
-    _dimensionControllers.add(DimensionController());
+    _dimensionControllers.add(
+      DimensionController(initialValue: randomNumberGenerator.nextDouble()),
+    );
 
     _dependencies.add(
       List.generate(otherDimensionsCount, (_) => randomFactor()) + [0],

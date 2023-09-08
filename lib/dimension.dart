@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 
 class DimensionController {
   final _key = GlobalKey<_DimensionState>();
+  final double initialValue;
+
+  DimensionController({
+    required this.initialValue,
+  });
 
   void move({required double diff}) {
     if (_key.currentState == null) throw UnboundControllerException();
@@ -23,10 +28,10 @@ class Dimension extends StatefulWidget {
   })? onChanged;
 
   Dimension({
-    this.initialValue = .5,
     this.controller,
     this.onChanged,
-  }) : super(key: controller?._key);
+  })  : initialValue = controller?.initialValue ?? defaultValue,
+        super(key: controller?._key);
 
   @override
   State<Dimension> createState() => _DimensionState();
