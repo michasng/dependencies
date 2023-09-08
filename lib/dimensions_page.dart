@@ -8,10 +8,12 @@ class DimensionsPage extends StatefulWidget {
   static const floodCount = 100;
 
   final int initialDimensions;
+  final VoidCallback onToggleBrightness;
 
   const DimensionsPage({
     super.key,
     this.initialDimensions = 1,
+    required this.onToggleBrightness,
   });
 
   @override
@@ -55,6 +57,11 @@ class _DimensionsPageState extends State<DimensionsPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+            onPressed: widget.onToggleBrightness,
+            tooltip: 'Toggle dark mode',
+            icon: const Icon(Icons.brightness_6),
+          ),
           IconButton(
             onPressed: () {
               setState(() {

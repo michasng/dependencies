@@ -5,8 +5,15 @@ void main() {
   runApp(const App());
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  Brightness brightness = Brightness.light;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +21,21 @@ class App extends StatelessWidget {
       title: 'Dimensions',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: brightness,
+        ),
         useMaterial3: true,
       ),
-      home: const DimensionsPage(
+      home: DimensionsPage(
         initialDimensions: 1,
+        onToggleBrightness: () {
+          setState(() {
+            brightness = brightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light;
+          });
+        },
       ),
     );
   }
