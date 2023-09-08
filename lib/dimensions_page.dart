@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:dependencies/dimension.dart';
 import 'package:flutter/material.dart';
 
@@ -14,21 +17,33 @@ class DimensionsPage extends StatefulWidget {
 }
 
 class _DimensionsPageState extends State<DimensionsPage> {
+  final randomNumberGenerator = Random();
   final List<DimensionController> _dimensionControllers = [];
+  final List<List<double>> _dependencies = [];
 
   @override
   void initState() {
     super.initState();
 
     for (int i = 0; i < widget.initialDimensions; i++) {
-      _dimensionControllers.add(DimensionController());
+      _addDimension();
     }
   }
 
   void _addDimension() {
-    setState(() {
-      _dimensionControllers.add(DimensionController());
-    });
+    double randomFactor() {
+      return randomNumberGenerator.nextDouble() * 2 - 1;
+    }
+
+    int otherDimensionsCount = _dimensionControllers.length;
+    _dimensionControllers.add(DimensionController());
+
+    _dependencies.add(
+      List.generate(otherDimensionsCount, (_) => randomFactor()) + [0],
+    );
+    for (int i = 0; i < otherDimensionsCount; i++) {
+      _dependencies[i].add(randomFactor());
+    }
   }
 
   @override
@@ -41,13 +56,30 @@ class _DimensionsPageState extends State<DimensionsPage> {
               for (final controller in _dimensionControllers)
                 Dimension(
                   controller: controller,
+                  onChanged: ({
+                    required double oldValue,
+                    required double newValue,
+                  }) {
+                    final diff = newValue - oldValue;
+                    final dimensionIndex =
+                        _dimensionControllers.indexOf(controller);
+                    _dependencies[dimensionIndex]
+                        .forEachIndexed((dependencyIndex, factor) {
+                      final dependency = _dimensionControllers[dependencyIndex];
+                      dependency.move(diff: diff * factor);
+                    });
+                  },
                 ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addDimension,
+        onPressed: () {
+          setState(() {
+            _addDimension();
+          });
+        },
         tooltip: 'Add dimension',
         child: const Icon(Icons.add),
       ),

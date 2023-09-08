@@ -1,15 +1,26 @@
+import 'package:dependencies/unbound_controller_exception.dart';
 import 'package:flutter/material.dart';
 
 class DimensionController {
   final _key = GlobalKey<_DimensionState>();
 
-  set value(double value) => _key.currentState?.value = value;
+  void move({required double diff}) {
+    if (_key.currentState == null) throw UnboundControllerException();
+
+    final unboundNewValue = _key.currentState!._value + diff;
+    _key.currentState!.value = unboundNewValue.clamp(0, 1);
+  }
 }
 
 class Dimension extends StatefulWidget {
+  static const double defaultValue = 0.5;
+
   final double initialValue;
   final DimensionController? controller;
-  final void Function(double value)? onChanged;
+  final void Function({
+    required double oldValue,
+    required double newValue,
+  })? onChanged;
 
   Dimension({
     this.initialValue = .5,
@@ -39,9 +50,13 @@ class _DimensionState extends State<Dimension> {
         child: Slider(
           value: _value,
           onChanged: (value) {
+            final oldValue = _value;
             this.value = value;
             if (widget.onChanged != null) {
-              widget.onChanged!(value);
+              widget.onChanged!(
+                oldValue: oldValue,
+                newValue: value,
+              );
             }
           },
         ),
