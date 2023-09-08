@@ -1,4 +1,4 @@
-import 'package:dependencies/home_page.dart';
+import 'package:dependencies/dimensions_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,12 +11,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dimensions',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      home: const DimensionsPage(
+        initialDimensions: 1,
+      ),
     );
   }
 }
