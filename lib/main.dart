@@ -1,4 +1,5 @@
 import 'package:dependencies/dimensions_page.dart';
+import 'package:dependencies/seed_color_slider.dart';
 import 'package:dependencies/toggle_brightness_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final seedColor = ref.watch(seedColorProvider);
     final brightness = ref.watch(brightnessProvider);
 
     return MaterialApp(
@@ -19,7 +21,7 @@ class App extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: seedColor,
           brightness: brightness,
         ),
         useMaterial3: true,

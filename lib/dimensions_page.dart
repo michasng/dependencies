@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:dependencies/dimension.dart';
+import 'package:dependencies/seed_color_slider.dart';
 import 'package:dependencies/toggle_brightness_button.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +57,7 @@ class _DimensionsPageState extends State<DimensionsPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          const Expanded(child: SeedColorSlider()),
           const ToggleBrightnessButton(),
           IconButton(
             onPressed: () {
