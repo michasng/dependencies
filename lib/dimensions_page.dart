@@ -5,6 +5,8 @@ import 'package:dependencies/dimension.dart';
 import 'package:flutter/material.dart';
 
 class DimensionsPage extends StatefulWidget {
+  static const floodCount = 100;
+
   final int initialDimensions;
 
   const DimensionsPage({
@@ -89,14 +91,31 @@ class _DimensionsPageState extends State<DimensionsPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _addDimension();
-          });
-        },
-        tooltip: 'Add dimension',
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.small(
+            onPressed: () {
+              setState(() {
+                for (int i = 0; i < DimensionsPage.floodCount; i++) {
+                  _addDimension();
+                }
+              });
+            },
+            tooltip: 'Add ${DimensionsPage.floodCount} dimensions',
+            child: const Icon(Icons.flood_outlined),
+          ),
+          const SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                _addDimension();
+              });
+            },
+            tooltip: 'Add dimension',
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
