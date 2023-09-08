@@ -49,6 +49,21 @@ class _DimensionsPageState extends State<DimensionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _dimensionControllers.clear();
+                _dependencies.clear();
+                _addDimension();
+              });
+            },
+            tooltip: 'Reset',
+            icon: const Icon(Icons.restart_alt_rounded),
+          ),
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Wrap(
