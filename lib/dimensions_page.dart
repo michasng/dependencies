@@ -73,7 +73,28 @@ class _DimensionsPageState extends State<DimensionsPage> {
       body: Center(
         child: SingleChildScrollView(
           child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.end,
             children: [
+              FittedBox(
+                child: Column(
+                  children: [
+                    Transform.flip(
+                      flipX: true,
+                      child: const Icon(
+                        Icons.hide_source,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: Slider(
+                        value: _values.average,
+                        onChanged: null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               for (int i = 0; i < _values.length; i++)
                 Dimension(
                   value: _values[i],
