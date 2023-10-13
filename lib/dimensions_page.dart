@@ -22,7 +22,7 @@ class DimensionsPage extends StatefulWidget {
 
 class _DimensionsPageState extends State<DimensionsPage> {
   final randomNumberGenerator = Random();
-  final List<DimensionController> _dimensionControllers = [];
+  final List<double> _values = [];
   final List<List<double>> _dependencies = [];
 
   @override
@@ -39,10 +39,8 @@ class _DimensionsPageState extends State<DimensionsPage> {
       return randomNumberGenerator.nextDouble() * 2 - 1;
     }
 
-    int otherDimensionsCount = _dimensionControllers.length;
-    _dimensionControllers.add(
-      DimensionController(initialValue: randomNumberGenerator.nextDouble()),
-    );
+    int otherDimensionsCount = _values.length;
+    _values.add(randomNumberGenerator.nextDouble());
 
     _dependencies.add(
       List.generate(otherDimensionsCount, (_) => randomFactor()) + [0],
@@ -62,7 +60,7 @@ class _DimensionsPageState extends State<DimensionsPage> {
           IconButton(
             onPressed: () {
               setState(() {
-                _dimensionControllers.clear();
+                _values.clear();
                 _dependencies.clear();
                 _addDimension();
               });
@@ -76,20 +74,19 @@ class _DimensionsPageState extends State<DimensionsPage> {
         child: SingleChildScrollView(
           child: Wrap(
             children: [
-              for (final controller in _dimensionControllers)
+              for (int i = 0; i < _values.length; i++)
                 Dimension(
-                  controller: controller,
-                  onChanged: ({
-                    required double oldValue,
-                    required double newValue,
-                  }) {
-                    final diff = newValue - oldValue;
-                    final dimensionIndex =
-                        _dimensionControllers.indexOf(controller);
-                    _dependencies[dimensionIndex]
-                        .forEachIndexed((dependencyIndex, factor) {
-                      final dependency = _dimensionControllers[dependencyIndex];
-                      dependency.move(diff: diff * factor);
+                  value: _values[i],
+                  onChanged: (double newValue) {
+                    final diff = newValue - _values[i];
+                    setState(() {
+                      _values[i] = newValue;
+                      _dependencies[i]
+                          .forEachIndexed((dependencyIndex, factor) {
+                        final unboundNewValue =
+                            _values[dependencyIndex] + diff * factor;
+                        _values[dependencyIndex] = unboundNewValue.clamp(0, 1);
+                      });
                     });
                   },
                 ),
